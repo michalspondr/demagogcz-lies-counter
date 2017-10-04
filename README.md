@@ -9,3 +9,5 @@ kde počet\_všech\_výroků znamená součet počtu pravda, nepravd, zaváděj�
 
 V souboru demagog-lhari.csv je vygenerovaný soubor, jména jsou seřazena od největší míry lhaní po nejnižší.
 
+Je mi jasné, že výsledky mohou být nevypovídající, např. protože někteří mají uveden jen jeden výrok a to nepravdivý. Nicméně pro hrubou představu u známějších a do debat častěji zvaných politiků to postačit může.
+
