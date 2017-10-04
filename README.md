@@ -11,3 +11,5 @@ V souboru demagog-lhari.csv je vygenerovaný soubor, jména jsou seřazena od ne
 
 Je mi jasné, že výsledky mohou být nevypovídající, např. protože někteří mají uveden jen jeden výrok a to nepravdivý. Nicméně pro hrubou představu u známějších a do debat častěji zvaných politiků to postačit může.
 
+Soubor demagog-pravdomluvni.csv obsahuje seznam seřazený podle toho, kdo mluvil nejvíce pravdu (vzniklo jednoduchou modifikací skriptu).
+
