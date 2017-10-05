@@ -13,3 +13,5 @@ Je mi jasné, že výsledky mohou být nevypovídající, např. protože někte
 
 Soubor demagog-pravdomluvni.csv obsahuje seznam seřazený podle toho, kdo mluvil nejvíce pravdu (vzniklo jednoduchou modifikací skriptu).
 
+Soubor stats-\*.csv bude obsahovat statistiku všech výroků k danému dni v následujícím formátu: jméno;pravda;nepravda;zavádějící;neověřitelné;míra\_lhaní
+
