@@ -49,6 +49,7 @@ def get_data():
 
 # Print all politician stats
 def all_stats():
+    print('jméno,pravda,nepravda,zavádějící,neověřitelné,míra nepravdivosti')   # hlavička pro CSV
     for name, stats in sorted(politician.items()):  # we do not use sort ordering here
         print("{0},{1},{2},{3},{4},{5}".format(name, stats['truth'], stats['lie'], stats['misleading'], stats['nonverifiable'], stats['lie_rate']))
 
@@ -56,9 +57,14 @@ def all_stats():
 # Template method for calculating of truth/lie/misleading/nonverifiable rate
 def most_rate(rate_name):
     assert(rate_name in ('truth_rate', 'lie_rate', 'misleading_rate', 'nonverifiable_rate'))
+    name_rate = {'truth_rate': 'míra pravdivosti',
+                 'lie_rate': 'míra nepravdivosti',
+                 'misleading_rate': 'míra zavádějícnosti',
+                 'nonverifiable_rate': 'míra neověřitelnosti'}
     rates={}
     for name, stats in politician.items():
         rates[name] = stats[rate_name]
+    print('jméno,{0}'.format(name_rate[rate_name])) # hlavička pro CSV
     for name in sorted(rates, key=rates.get, reverse=descending_order):
         print("{0},{1}".format(name, rates[name]))
 
