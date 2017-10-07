@@ -21,6 +21,7 @@ Skript má parametry, kterými lze nastavovat výstup. Implicitní chování je 
 Protože míry pravdivosti jsou přesnější, čím více výroků dotyčný má, a některé výsledky mohou být zavádějící (má-li dotyčný jen 1 výrok a ten je lživý, je jeho míra lhaní 100%), je tu k dispozici parametr --min-statement-count <hodnota>, kterým se dá nastavit požadovaný minimální počet výroků; pokud je výroků méně, není taková osoba přidána do výpisu.
 
 ## Přiložené soubory
+![graf](stats/graf-2017-10-7.svg)
 V adresáři stats/ je několik vygenerovaných souborů.
 
 V souboru demagog-lhari.csv je vygenerovaný soubor, jména jsou seřazena od největší míry lhaní po nejnižší.
