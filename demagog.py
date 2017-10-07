@@ -50,7 +50,7 @@ def get_data():
 # Print all politician stats
 def all_stats():
     for name, stats in sorted(politician.items()):  # we do not use sort ordering here
-        print("{0};{1};{2};{3};{4};{5}".format(name, stats['truth'], stats['lie'], stats['misleading'], stats['nonverifiable'], stats['lie_rate']))
+        print("{0},{1},{2},{3},{4},{5}".format(name, stats['truth'], stats['lie'], stats['misleading'], stats['nonverifiable'], stats['lie_rate']))
 
 
 # Template method for calculating of truth/lie/misleading/nonverifiable rate
@@ -60,7 +60,7 @@ def most_rate(rate_name):
     for name, stats in politician.items():
         rates[name] = stats[rate_name]
     for name in sorted(rates, key=rates.get, reverse=descending_order):
-        print("{0};{1}".format(name, rates[name]))
+        print("{0},{1}".format(name, rates[name]))
 
 
 # Print all politicians sorted by most lie_statements/all_statements ratio
