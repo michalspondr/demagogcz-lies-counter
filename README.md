@@ -24,9 +24,9 @@ Protože míry pravdivosti jsou přesnější, čím více výroků dotyčný m�
 ![graf](stats/graf-2017-10-7.svg)
 V adresáři stats/ je několik vygenerovaných souborů.
 
-V souboru demagog-lhari.csv je vygenerovaný soubor, jména jsou seřazena od největší míry lhaní po nejnižší.
+V souboru demagog-lhari.csv je vygenerovaný soubor, jména jsou seřazena od největší míry lhaní po nejnižší. Jde o statistiku pro sledované s 15 a více výroky.
 
-Soubor demagog-pravdomluvni.csv obsahuje seznam seřazený podle toho, kdo mluvil nejvíce pravdu (vzniklo jednoduchou modifikací skriptu).
+Soubor demagog-pravdomluvni.csv obsahuje seznam seřazený podle toho, kdo mluvil nejvíce pravdu (vzniklo jednoduchou modifikací skriptu). Opět pro ty s 15 a více výroky.
 
 Soubor stats-\*.csv bude obsahovat statistiku všech výroků k danému dni v následujícím formátu: jméno;pravda;nepravda;zavádějící;neověřitelné;míra\_lhaní
 
