@@ -5,7 +5,7 @@ import urllib.request
 import re
 
 # Current count of profiles @ Demagog site
-POLITICIAN_COUNT=432
+POLITICIAN_COUNT=20
 #TODO find out the actual number dynamically
 
 # global structure containing parsed information about politician
@@ -25,16 +25,22 @@ def get_data():
         if i in (17, 28, 29, 204):
             continue
 
+        name = None # because I don't like the Python way of variable scoping
         for line in urllib.request.urlopen('http://demagog.cz/politici/'+str(i)+'/').readlines():
             w = line.strip().decode('utf-8')
             politician_name = re.match(r"<title>Demagog.cz &mdash; (.*)</title>", w)
+            # parse politician name
             if politician_name:
                 name = re.sub(' +', ' ', politician_name.group(1))  # remove multiple spaces
-            elif 'politicianStats' in w:
+                party = ''
+
+            # parse stats about politician
+            elif name and 'politicianStats' in w:
                 stats = re.match(r".*numberIs(\d*).*numberIs(\d*).*numberIs(\d*).*numberIs(\d*).*", w)
                 if stats:
                     politician[name] = {'truth': stats.group(1), 'lie': stats.group(2), 'misleading': stats.group(3), 'nonverifiable': stats.group(4)}
                     all_statements_count = int(stats.group(1)) + int(stats.group(2)) + int(stats.group(3)) + int(stats.group(4))
+                    politician[name]['party'] = party   # we already have this data
 
                     # remove politician from stats if he does not have a minimum count of statements
                     if (minimum_statement_count and all_statements_count < minimum_statement_count):
@@ -46,12 +52,18 @@ def get_data():
                     politician[name]['misleading_rate'] = 0.0 if all_statements_count == 0 else float(stats.group(3))/all_statements_count
                     politician[name]['nonverifiable_rate'] = 0.0 if all_statements_count == 0 else float(stats.group(4))/all_statements_count
 
+            # parse politician party (if exists)
+            elif name and name in re.sub(' +', ' ', w) and re.match(r".*\((.*)\)", w):
+                party_name = re.match(r".*\((.*)\)$", w)
+                if party_name:
+                    party = party_name.group(1)
+
 
 # Print all politician stats
 def all_stats():
-    print('jméno,pravda,nepravda,zavádějící,neověřitelné,míra nepravdivosti')   # hlavička pro CSV
+    print('jméno,strana,pravda,nepravda,zavádějící,neověřitelné,míra nepravdivosti')   # hlavička pro CSV
     for name, stats in sorted(politician.items()):  # we do not use sort ordering here
-        print("{0},{1},{2},{3},{4},{5}".format(name, stats['truth'], stats['lie'], stats['misleading'], stats['nonverifiable'], stats['lie_rate']))
+        print("{0},{1},{2},{3},{4},{5},{6}".format(name, stats['party'], stats['truth'], stats['lie'], stats['misleading'], stats['nonverifiable'], stats['lie_rate']))
 
 
 # Template method for calculating of truth/lie/misleading/nonverifiable rate
@@ -62,11 +74,13 @@ def most_rate(rate_name):
                  'misleading_rate': 'míra zavádějícnosti',
                  'nonverifiable_rate': 'míra neověřitelnosti'}
     rates={}
+    parties={}
     for name, stats in politician.items():
         rates[name] = stats[rate_name]
-    print('jméno,{0}'.format(name_rate[rate_name])) # hlavička pro CSV
+        parties[name] = stats['party']
+    print('jméno,strana,{0}'.format(name_rate[rate_name])) # hlavička pro CSV
     for name in sorted(rates, key=rates.get, reverse=descending_order):
-        print("{0},{1}".format(name, rates[name]))
+        print("{0},{1},{2}".format(name, parties[name], rates[name]))
 
 
 # Print all politicians sorted by most lie_statements/all_statements ratio
