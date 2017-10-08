@@ -5,7 +5,7 @@ import urllib.request
 import re
 
 # Current count of profiles @ Demagog site
-POLITICIAN_COUNT=20
+POLITICIAN_COUNT=432
 #TODO find out the actual number dynamically
 
 # global structure containing parsed information about politician
