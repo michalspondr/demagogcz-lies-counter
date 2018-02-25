@@ -3,9 +3,10 @@
 import argparse
 import urllib.request
 import re
+import sys
 
 # Current count of profiles @ Demagog site
-POLITICIAN_COUNT=432
+POLITICIAN_COUNT=440
 #TODO find out the actual number dynamically
 
 # global structure containing parsed information about politician
@@ -26,37 +27,41 @@ def get_data():
             continue
 
         name = None # because I don't like the Python way of variable scoping
-        for line in urllib.request.urlopen('http://demagog.cz/politici/'+str(i)+'/').readlines():
-            w = line.strip().decode('utf-8')
-            politician_name = re.match(r"<title>Demagog.cz &mdash; (.*)</title>", w)
-            # parse politician name
-            if politician_name:
-                name = re.sub(' +', ' ', politician_name.group(1))  # remove multiple spaces
-                party = ''
+        try:
+            for line in urllib.request.urlopen('http://demagog.cz/politici/'+str(i)+'/').readlines():
+                w = line.strip().decode('utf-8')
+                politician_name = re.match(r"<title>Demagog.cz &mdash; (.*)</title>", w)
+                # parse politician name
+                if politician_name:
+                    name = re.sub(' +', ' ', politician_name.group(1))  # remove multiple spaces
+                    party = ''
 
-            # parse stats about politician
-            elif name and 'politicianStats' in w:
-                stats = re.match(r".*numberIs(\d*).*numberIs(\d*).*numberIs(\d*).*numberIs(\d*).*", w)
-                if stats:
-                    politician[name] = {'truth': stats.group(1), 'lie': stats.group(2), 'misleading': stats.group(3), 'nonverifiable': stats.group(4)}
-                    all_statements_count = int(stats.group(1)) + int(stats.group(2)) + int(stats.group(3)) + int(stats.group(4))
-                    politician[name]['party'] = party   # we already have this data
+                # parse stats about politician
+                elif name and 'politicianStats' in w:
+                    stats = re.match(r".*numberIs(\d*).*numberIs(\d*).*numberIs(\d*).*numberIs(\d*).*", w)
+                    if stats:
+                        politician[name] = {'truth': stats.group(1), 'lie': stats.group(2), 'misleading': stats.group(3), 'nonverifiable': stats.group(4)}
+                        all_statements_count = int(stats.group(1)) + int(stats.group(2)) + int(stats.group(3)) + int(stats.group(4))
+                        politician[name]['party'] = party   # we already have this data
 
-                    # remove politician from stats if he does not have a minimum count of statements
-                    if (minimum_statement_count and all_statements_count < minimum_statement_count):
-                        politician.pop(name)
-                        continue
+                        # remove politician from stats if he does not have a minimum count of statements
+                        if (minimum_statement_count and all_statements_count < minimum_statement_count):
+                            politician.pop(name)
+                            continue
 
-                    politician[name]['truth_rate'] = 0.0 if all_statements_count == 0 else float(stats.group(1))/all_statements_count
-                    politician[name]['lie_rate'] = 0.0 if all_statements_count == 0 else float(stats.group(2))/all_statements_count
-                    politician[name]['misleading_rate'] = 0.0 if all_statements_count == 0 else float(stats.group(3))/all_statements_count
-                    politician[name]['nonverifiable_rate'] = 0.0 if all_statements_count == 0 else float(stats.group(4))/all_statements_count
+                        politician[name]['truth_rate'] = 0.0 if all_statements_count == 0 else float(stats.group(1))/all_statements_count
+                        politician[name]['lie_rate'] = 0.0 if all_statements_count == 0 else float(stats.group(2))/all_statements_count
+                        politician[name]['misleading_rate'] = 0.0 if all_statements_count == 0 else float(stats.group(3))/all_statements_count
+                        politician[name]['nonverifiable_rate'] = 0.0 if all_statements_count == 0 else float(stats.group(4))/all_statements_count
 
-            # parse politician party (if exists)
-            elif name and name in re.sub(' +', ' ', w) and re.match(r".*\((.*)\)", w):
-                party_name = re.match(r".*\((.*)\)$", w)
-                if party_name:
-                    party = party_name.group(1)
+                # parse politician party (if exists)
+                elif name and name in re.sub(' +', ' ', w) and re.match(r".*\((.*)\)", w):
+                    party_name = re.match(r".*\((.*)\)$", w)
+                    if party_name:
+                        party = party_name.group(1)
+        except urllib.error.HTTPError:
+            bad_url = 'http://demagog.cz/politici/'+str(i)+'/'
+            sys.stderr.write('Can not open ' + bad_url + '\n')
 
 
 # Print all politician stats
