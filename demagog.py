@@ -6,7 +6,7 @@ import re
 import sys
 
 # Current count of profiles @ Demagog site
-POLITICIAN_COUNT=440
+POLITICIAN_COUNT=478
 #TODO find out the actual number dynamically
 
 # global structure containing parsed information about politician
@@ -23,7 +23,7 @@ minimum_statement_count = None
 def get_data():
     for i in range(1, POLITICIAN_COUNT+1):
         # remove non-politician profiles (Demagog team etc.)
-        if i in (17, 28, 29, 204):
+        if i in (17, 28, 29, 164, 182, 204):
             continue
 
         name = None # because I don't like the Python way of variable scoping

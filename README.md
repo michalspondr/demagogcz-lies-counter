@@ -1,6 +1,8 @@
 # Počítadlo lží politiků
 Skript pro stáhnutí dat z demagog.cz a výpočtu "lživosti" jednotlivých politiků.
 
+** AKTUÁLNĚ SKRIPT NEFUNGUJE, ZMĚNIL SE FORMÁT STRÁNKY, KTERÁ BYLA PARSOVÁNA.**
+
 Princip je jednoduchý: stáhnout se data ze serveru demagog.cz a pro každý stažený subjekt se vypočítá míra lhaní podle následujícího vzorce:
 
 míra\_lhaní = počet\_nepravd / (počet\_všech\_výroků)
